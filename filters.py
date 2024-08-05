@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.signal import convolve2d
 
 
 def conv_nested(image, kernel):
@@ -107,7 +108,7 @@ def conv_faster(image, kernel):
     out = np.zeros((Hi, Wi))
 
     ### YOUR CODE HERE
-    pass
+    out = convolve2d(image, kernel, mode="same", boundary="fill", fillvalue=0)
     ### END YOUR CODE
 
     return out
