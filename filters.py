@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.signal import convolve2d
-
+import cv2
 
 def conv_nested(image, kernel):
     """A naive implementation of convolution filter.
@@ -85,11 +85,11 @@ def conv_fast(image, kernel):
     out = np.zeros((Hi, Wi))
 
     ### YOUR CODE HERE
-    padded = zero_pad(image, 1, 1)
+    padded = zero_pad(image, Hk//2, Wk//2)
     reversed_kernel = kernel[::-1, ::-1]
     for vert in range(Hi):
         for horiz in range(Wi):
-            out[vert][horiz] = np.sum( reversed_kernel * padded[vert : vert + 3, horiz : horiz + 3] )
+            out[vert][horiz] = np.sum( reversed_kernel * padded[vert : vert + Hk, horiz : horiz + Wk] )
     ### END YOUR CODE
 
     return out
@@ -126,9 +126,25 @@ def cross_correlation(f, g):
         out: numpy array of shape (Hf, Wf).
     """
 
-    out = np.zeros_like(f)
+    # out = np.zeros_like(f)
+    # Hf, Wf = f.shape
     ### YOUR CODE HERE
-    pass
+    # fft_x = np.fft.fft2(f)
+
+    # y = zero_pad(g, Hf//2, Wf//2)
+    # e = np.ones_like(g)
+    # e = zero_pad(e, Hf//2, Wf//2)
+    # x_y = np.fft.ifft2( conv_fast(fft_x, np.conjugate(np.fft.fft2(y))))
+    # x_x = np.fft.ifft2( conv_fast( conv_fast(fft_x, np.conjugate( fft_x )), np.conjugate(np.fft.fft2(e) )))
+
+    # out = (f + x_y) / f + x_x
+
+    out = cv2.matchTemplate(f, g, method=0)
+    
+
+    # x_y = np.fft.ifft2(conv_fast(np.fft.fft2(f).real, np.fft.fft2(zero_pad(g[::-1, ::-1], Hf//2, Wf//2)).real )).real
+
+    # p_x_y = np.fft.ifft2(conv_fast(np.fft.fft2(f).real, np.fft.fft2(zero_pad(g[::-1, ::-1], Hf//2, Wf//2)).real )).real
     ### END YOUR CODE
 
     return out
