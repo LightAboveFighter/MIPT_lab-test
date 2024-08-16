@@ -126,27 +126,11 @@ def cross_correlation(f, g):
         out: numpy array of shape (Hf, Wf).
     """
 
-    # out = np.zeros_like(f)
-    # Hf, Wf = f.shape
+    out = np.zeros_like(f)
+    Hf, Wf = f.shape
     ### YOUR CODE HERE
-    # fft_x = np.fft.fft2(f)
-
-    # y = zero_pad(g, Hf//2, Wf//2)
-    # e = np.ones_like(g)
-    # e = zero_pad(e, Hf//2, Wf//2)
-    # x_y = np.fft.ifft2( conv_fast(fft_x, np.conjugate(np.fft.fft2(y))))
-    # x_x = np.fft.ifft2( conv_fast( conv_fast(fft_x, np.conjugate( fft_x )), np.conjugate(np.fft.fft2(e) )))
-
-    # out = (f + x_y) / f + x_x
-
-    out = cv2.matchTemplate(f, g, method=0)
-    
-
-    # x_y = np.fft.ifft2(conv_fast(np.fft.fft2(f).real, np.fft.fft2(zero_pad(g[::-1, ::-1], Hf//2, Wf//2)).real )).real
-
-    # p_x_y = np.fft.ifft2(conv_fast(np.fft.fft2(f).real, np.fft.fft2(zero_pad(g[::-1, ::-1], Hf//2, Wf//2)).real )).real
+    out = cv2.matchTemplate(f, g, method=4)
     ### END YOUR CODE
-
     return out
 
 def zero_mean_cross_correlation(f, g):
