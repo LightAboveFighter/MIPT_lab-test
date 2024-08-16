@@ -129,7 +129,7 @@ def cross_correlation(f, g):
     out = np.zeros_like(f)
     Hf, Wf = f.shape
     ### YOUR CODE HERE
-    out = cv2.matchTemplate(f, g, method=4)
+    out = conv_fast(f, g)
     ### END YOUR CODE
     return out
 
