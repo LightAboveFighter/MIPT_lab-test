@@ -150,7 +150,8 @@ def zero_mean_cross_correlation(f, g):
 
     out = np.zeros_like(f)
     ### YOUR CODE HERE
-    pass
+    zero_g = g - np.mean(g)
+    out = conv_fast(f, zero_g)
     ### END YOUR CODE
 
     return out
