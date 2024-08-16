@@ -57,7 +57,9 @@ def zero_pad(image, pad_height, pad_width):
 
     ### YOUR CODE HERE
     out[pad_height : H + pad_height, pad_width : W + pad_width] = image
+
     ### END YOUR CODE
+
     return out
 
 
@@ -90,6 +92,7 @@ def conv_fast(image, kernel):
     for vert in range(Hi):
         for horiz in range(Wi):
             out[vert][horiz] = np.sum( reversed_kernel * padded[vert : vert + Hk, horiz : horiz + Wk] )
+
     ### END YOUR CODE
 
     return out
@@ -109,6 +112,7 @@ def conv_faster(image, kernel):
 
     ### YOUR CODE HERE
     out = convolve2d(image, kernel, mode="same", boundary="fill", fillvalue=0)
+
     ### END YOUR CODE
 
     return out
@@ -128,9 +132,12 @@ def cross_correlation(f, g):
 
     out = np.zeros_like(f)
     Hf, Wf = f.shape
+
     ### YOUR CODE HERE
     out = conv_fast(f, g)
+
     ### END YOUR CODE
+
     return out
 
 def zero_mean_cross_correlation(f, g):
@@ -152,6 +159,7 @@ def zero_mean_cross_correlation(f, g):
     ### YOUR CODE HERE
     zero_g = g - np.mean(g)
     out = conv_fast(f, zero_g)
+
     ### END YOUR CODE
 
     return out
@@ -174,6 +182,7 @@ def normalized_cross_correlation(f, g):
     """
 
     out = np.zeros_like(f)
+
     ### YOUR CODE HERE
     Hi, Wi = f.shape
     Hk, Wk = g.shape
@@ -188,6 +197,7 @@ def normalized_cross_correlation(f, g):
             patch = padded[vert : vert + Hk, horiz : horiz + Wk]
             patch = (patch - patch.mean()) / patch.std()
             out[vert][horiz] = np.sum( norm_kernel * patch )
+            
     ### END YOUR CODE
 
     return out
