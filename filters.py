@@ -175,7 +175,19 @@ def normalized_cross_correlation(f, g):
 
     out = np.zeros_like(f)
     ### YOUR CODE HERE
-    pass
+    Hi, Wi = f.shape
+    Hk, Wk = g.shape
+    out = np.zeros((Hi, Wi))
+
+    padded = zero_pad(f, Hk//2, Wk//2)
+    reversed_kernel = g[::-1, ::-1]
+    ker_mean = reversed_kernel.mean()
+    norm_kernel = (reversed_kernel - ker_mean) / reversed_kernel.std()
+    for vert in range(Hi):
+        for horiz in range(Wi):
+            patch = padded[vert : vert + Hk, horiz : horiz + Wk]
+            patch = (patch - patch.mean()) / patch.std()
+            out[vert][horiz] = np.sum( norm_kernel * patch )
     ### END YOUR CODE
 
     return out
